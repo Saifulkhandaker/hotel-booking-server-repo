@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 5000;
@@ -35,6 +35,14 @@ async function run() {
         const cursor = roomCollection.find();
         const result = await cursor.toArray();
         res.send(result);
+    })
+
+    // single room api created
+    app.get('/rooms/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await roomCollection.findOne(query);
+      res.send(result)
     })
 
     // Send a ping to confirm a successful connection
