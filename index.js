@@ -77,6 +77,23 @@ async function run() {
     })
 
 
+    // update booking api created
+    app.put('/bookings/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true }
+      const bookings = req.body;
+      const updatedBooking = {
+        $set: {
+          check_in: bookings.check_in,
+          check_out: bookings.check_out
+        }
+      }
+      const result = await bookingCollection.updateOne(filter, updatedBooking, options);
+      res.send(result)
+    })
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
