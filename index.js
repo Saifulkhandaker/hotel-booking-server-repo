@@ -46,6 +46,19 @@ async function run() {
       res.send(result)
     })
 
+
+    //booking collection for specific user
+    app.get('/bookings', async(req, res) => {
+      let query = {};
+      if(req.query?.email){
+        query = {email: req.query.email}
+      }
+      const result = await bookingCollection.find(query).toArray();
+      res.send(result)
+    }) 
+
+
+
     // booking collection api created
     app.post('/bookings', async(req, res) => {
       const booking = req.body;
