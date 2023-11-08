@@ -6,8 +6,19 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // middleware
-app.use(cors());
+const corsOptions = {
+  // origin: '*',
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://hotel-boo-c51b7.web.app'
+  ],
+  credentials: true,
+  optionSuccessStatus: 200,
+}
+app.use(cors(corsOptions))
 app.use(express.json());
+
 
 
 
@@ -26,7 +37,6 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
 
     const roomCollection = client.db('hotelBooking').collection('rooms');
     const bookingCollection = client.db('hotelBooking').collection('bookings')
